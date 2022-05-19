@@ -37,7 +37,7 @@ let minABI = [
 
 app.get('/', (req, res) => {
     res.status(200).json({
-        message: "Hello World !"
+        message: "Hello This is thundercore api"
     })
 })
 
