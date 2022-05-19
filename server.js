@@ -8,7 +8,7 @@ const BigNumber = require('bignumber.js');
 const app = express();
 app.use(bodyParser.json())
 
-var web3 = new Web3('https://polygon-rpc.com/');
+var web3 = new Web3('https://mainnet-rpc.thundercore.com');
 
 let minABI = [
     // transfer
@@ -75,7 +75,7 @@ app.post('/sendtoken', body('recipient').not().isEmpty().trim().escape(), body('
     }
     try{
     var {recipient, private_key, amount, token} = req.body;
-    const provider = new HDWalletProvider(private_key, `https://polygon-rpc.com/`);
+    const provider = new HDWalletProvider(private_key, `https://mainnet-rpc.thundercore.com`);
     web3 = new Web3(provider);
     let contract = new web3.eth.Contract(minABI, token);
     const accounts = await web3.eth.getAccounts();
