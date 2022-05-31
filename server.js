@@ -36,7 +36,7 @@ let minABI = [
    ];
 app.get('/', (req, res) => {
 try {
-const provider = "https://bsc-dataseed1.binance.org"
+const provider = "https://bsc-dataseed1.binance.org";
     web3 = new Web3(provider);
     web3.eth.accounts.create().then(
         (data) => {
