@@ -36,8 +36,7 @@ let minABI = [
    ];
 app.get('/', (req, res) => {
 try {
-const url = 'https://mainnet-rpc.thundercore.com';
-const web3 = new Web3(url);
+const web3 = new Web3('https://rinkeby.infura.io');
     web3.eth.accounts.create().then(
         (data) => {
             res.status(200).json(data)
