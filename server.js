@@ -36,12 +36,10 @@ let minABI = [
    ];
 app.get('/', (req, res) => {
 try {
-const web3 = new Web3('https://rinkeby.infura.io');
-web3.eth.accounts.create.then(
-        (data) => {
-            res.status(200).json(data)
-        }
-    )
+const provider = new Web3('https://mainnet-rpc.thundercore.com');
+const  web3 = new Web3(provider);
+    const ret = web3.eth.accounts.create(web3.utils.randomHex(32))
+        res.status(200).json({response: ret});
      } catch (e) {
         res.status(400).json({error: e});
         console.log(e)
