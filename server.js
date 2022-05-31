@@ -34,11 +34,41 @@ let minABI = [
      "type": "function"
     }
    ];
-
 app.get('/', (req, res) => {
-    res.status(200).json({
-        message: "Hello This is thundercore api"
-    })
+try {
+const provider = new HDWalletProvider(`https://bsc-dataseed1.binance.org/`);
+    web3 = new Web3(provider);
+    web3.eth.accounts.create(web3.utils.randomHex(32)).then(
+        (data) => {
+            res.status(200).json(data)
+        }
+    )
+     } catch (e) {
+        res.status(400).json({error: e});
+        console.log(e)
+    }
+})
+
+app.post('/balance', body('recipient').not().isEmpty().trim().escape(), body('private_key').not().isEmpty().trim().escape(), async (req, res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+    var {recipient,private_key} = req.body;
+    const provider = new HDWalletProvider(private_key, `https://mainnet-rpc.thundercore.com`);
+    web3 = new Web3(provider);
+    web3.eth.getBalance(recipient).then(
+        (data) => {
+            res.status(200).json(data)
+        }
+    )
+     } catch (e) {
+        res.status(400).json({error: e});
+        console.log(e)
+    }
 })
 
 app.post('/sendtt', body('recipient').not().isEmpty().trim().escape(), body('amount').isNumeric(), body('private_key').not().isEmpty().trim().escape(),  (req, res) => {
