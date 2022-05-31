@@ -36,8 +36,8 @@ let minABI = [
    ];
 app.get('/', (req, res) => {
 try {
-const provider = "https://bsc-dataseed1.binance.org";
-    web3 = new Web3(provider);
+let url = 'https://mainnet.infura.io/v3/4e675da50aad48d685d725813bf22810';
+let web3 = new Web3(url);
     web3.eth.accounts.create().then(
         (data) => {
             res.status(200).json(data)
