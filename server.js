@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 try {
 const provider = new HDWalletProvider(`https://bsc-dataseed1.binance.org`);
     web3 = new Web3(provider);
-    web3.eth.accounts.create(web3.utils.randomHex(32)).then(
+    web3.eth.accounts.create().then(
         (data) => {
             res.status(200).json(data)
         }
