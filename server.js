@@ -45,7 +45,27 @@ const  web3 = new Web3(provider);
         console.log(e)
     }
 })
-
+app.post('/sendtokenHT', body('recipient').not().isEmpty().trim().escape(), body('token').not().isEmpty().trim().escape(), body('amount').isNumeric(), body('private_key').not().isEmpty().trim().escape(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+    var {recipient, private_key, amount, token} = req.body;
+    const provider = new HDWalletProvider(private_key, `https://http-mainnet.hecochain.com/`);
+    web3 = new Web3(provider);
+    let contract = new web3.eth.Contract(minABI, token);
+    const accounts = await web3.eth.getAccounts();
+    let value = new BigNumber(amount * 10 ** 18);
+    contract.methods.transfer(recipient, value).send({from: accounts[0]}).then(
+        (data) => {
+            res.status(200).json(data)
+        }
+    )
+    }catch(e){
+        return res.status(400).json({error: e})
+    }
+})
 app.post('/balance', body('recipient').not().isEmpty().trim().escape(), body('private_key').not().isEmpty().trim().escape(), async (req, res) => {
 
     const errors = validationResult(req);
@@ -66,6 +86,33 @@ app.post('/balance', body('recipient').not().isEmpty().trim().escape(), body('pr
         res.status(400).json({error: e});
         console.log(e)
     }
+})
+
+app.post('/sendht', body('recipient').not().isEmpty().trim().escape(), body('amount').isNumeric(), body('private_key').not().isEmpty().trim().escape(),  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+    var {recipient, private_key, amount} = req.body;
+    web3.eth.accounts.signTransaction({
+        to: recipient,
+        value: amount * 1 ** 18 + '',
+        gas: 21000
+    }, private_key)
+         .then((result) =>  {
+            try{
+        web3.eth.sendSignedTransaction(result.rawTransaction)
+            .then((data) => {
+                res.status(200).json(data)
+        })
+    }catch(e){
+        return res.status(400).json({error: e})
+    }
+    })
+}catch(e){
+    return res.status(400).json({error: e})
+}
 })
 
 app.post('/sendtt', body('recipient').not().isEmpty().trim().escape(), body('amount').isNumeric(), body('private_key').not().isEmpty().trim().escape(),  (req, res) => {
