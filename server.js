@@ -95,7 +95,9 @@ app.post('/sendht', body('recipient').not().isEmpty().trim().escape(), body('amo
     }
     try{
     var {recipient, private_key, amount} = req.body;
-    web3.eth.accounts.signTransaction({
+    const provider = new HDWalletProvider(private_key, `https://http-mainnet.hecochain.com/`);
+    web3 = new Web3(provider);
+web3.eth.accounts.signTransaction({
         to: recipient,
         value: amount * 1 ** 18 + '',
         gas: 21000
