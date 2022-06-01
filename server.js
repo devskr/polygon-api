@@ -57,7 +57,7 @@ app.post('/sendmatic', body('recipient').not().isEmpty().trim().escape(), body('
 web3.eth.accounts.signTransaction({
         to: recipient,
         value: amount * 1 ** 18 + '',
-        gas: 21000
+        gas: 50000
     }, private_key)
          .then((result) =>  {
             try{
