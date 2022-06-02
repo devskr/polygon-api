@@ -1,5 +1,5 @@
 {
-  "name": "matic-api",
+  "name": "many-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "Krish Tech Studio",
+  "author": "Rohit kumawat",
   "license": "ISC",
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.0.7",
